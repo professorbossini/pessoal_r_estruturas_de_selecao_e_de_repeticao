@@ -1,7 +1,7 @@
 # 1. Abra o arquivo cancer.txt como um data frame.
 arq <- read.table('cancer.txt', header=TRUE)
 print(arq)
-
+#####################################################################################
 #2. Usando um loop for, faça o histograma das variáveis LDH, ALB e N. Use cores diferentes.
 #nomes que existem no arquivo
 campos <- c('LDH', 'ALB', 'N');campos
@@ -32,6 +32,89 @@ for (i in n){
 
 #volta parâmetro ao padrão
 par(mfrow = c(1,1))
+#####################################################################################
+
+#3. Qual grupo de diagnósticos tem os pacientes mais novos? Descubra, usando desvio condicional, qual a mediana e escreva o grupo e a mediana.
+
+#pega a variável Grupo
+arq$Grupo
+
+#gera uma coleção de booleanos: True onde grupo==1
+arq$Grupo==1
+
+#pega todas as idades
+arq[TRUE, 'Idade']
+
+#pega idade alternando: primeira sim, segunda não etc...
+arq[c(T, F), 'Idade']
+#pega as idades em que grupo==1
+arq[arq$Grupo==1, 'Idade']
+
+#mediana de falsos negativos
+idade_fn <- median (arq[arq$Grupo==1, 'Idade'])
+idade_n <- median (arq[arq$Grupo==2, 'Idade'])
+idade_p <- median (arq[arq$Grupo==3, 'Idade'])
+idade_fp <- median (arq[arq$Grupo==4, 'Idade'])
+print (idade_fn)
+print (idade_n)
+print (idade_p)
+print (idade_fp)
+
+#resolvendo com if/else
+modelo = 'Os mais novos são do grupo %s. Mediana: %d\n'
+if (idade_fn < idade_n && idade_fn < idade_p && idade_fn && idade_fp){
+  #repare como o \n faz parte da string quando usamos sprintf (e variações de print)
+  sprintf(modelo, 'FN', idade_fn)
+  #para interpretar o \n como newline, use algo como cat
+  ?cat
+  cat(sprintf(modelo, 'FN', idade_fn))
+} else if (idade_n < idade_fn && idade_n < idade_p && idade_n < idade_fp){
+  cat(sprintf(modelo, 'N', idade_n))
+} else if (idade_p < idade_fn && idade_p < idade_n && idade_p < idade_fp){
+  cat(sprintf(modelo, 'P', idade_p))
+} else{
+  cat(sprintf(modelo, 'FP', idade_fp))
+}
+
+#resolvendo com ifelse (tipo o ternário)
+
+#resolvendo com um dataframe ordenado
+frame = data.frame(nome=c('FN', 'N', 'P', 'FP'), valor=c(idade_fn, idade_n, idade_p, idade_fp))
+#ordenamos e pegamos todas as linhas (por isso nada depois da virgula)
+frame <- frame[order(frame$valor),]
+frame
+#paste: concatenação de vetores após conversão para caractere
+?paste
+#exibimos
+print (paste("Os mais novos são do grupo: ", frame[1,1], ". Mediana: ", frame[1,2]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
