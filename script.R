@@ -131,13 +131,25 @@ for (i in n){
 glicoses
 barplot(glicoses, main = "Glicemia dos Grupos", ylab="Média Glicemia", xlab='Grupos', col = 'lightblue')
 ######################################################################
+# 5. Usando um loop for faça uma matriz com as medidas de posição e dispersão ['median', 'mean', 'var', 'sd'] da variável idade nas colunas e cada grupo de diagnóstico nas linhas.
+# 
 
-
-
-
-
-
-
+#para pegar sem repetição
+grupos <- unique(arq$Grupo);grupos
+#matriz com uma linha por grupo e 4 colunas (mediana, media, variancia e desvio padrão)
+#nomes para linhas são os grupos e nomes para as colunas são as palavras especificadas
+nomes <- c('Mediana', "Média", "Variância", "Desvio Padrão")
+medidas <- matrix(nrow = length(grupos), ncol = 4, dimnames = list(grupos, nomes)); medidas;
+#guardando as funções a chamar
+funcoes <- c(median, mean, var, sd)
+~#intervalo
+n <- 1:length(grupos);n
+for (i in n){
+  for (j in 1:length(funcoes)){
+    medidas[i, nomes[j]] <- funcoes[j](arq[arq$Grupo==grupos[i], 'Idade'])
+  }
+}
+medidas
 
 
 
