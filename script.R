@@ -76,10 +76,35 @@ if (idade_fn < idade_n && idade_fn < idade_p && idade_fn && idade_fp){
   cat(sprintf(modelo, 'FP', idade_fp))
 }
 
+
+
+
 #resolvendo com ifelse (tipo o ternário)
 
+#observe como ele pode ser inconveniente neste caso
+#por ser vetorizado, o teste precisa ser um vetor de booleanos se desejarmos devolver um vetor
+#teste simples antes de resolver o exercício
+a <- ifelse(1 < 2, c(1, 2), c(3, 4)); a;
+a <- ifelse(c(1 < 2, 1 < 2), c(1, 2), c(3, 4)); a;
+res <- ifelse(
+  c(idade_fn < idade_n && idade_fn < idade_p && idade_fn && idade_fp, idade_fn < idade_n && idade_fn < idade_p && idade_fn && idade_fp),
+  c('FN', idade_fn),
+  ifelse(
+    c(idade_n < idade_fn && idade_n < idade_p && idade_n < idade_fp, idade_n < idade_fn && idade_n < idade_p && idade_n < idade_fp),
+    c('N', idade_n),
+    ifelse(
+      c(idade_p < idade_fn && idade_p < idade_n && idade_p < idade_fp, idade_p < idade_fn && idade_p < idade_n && idade_p < idade_fp),
+      c('P', idade_p),
+      c('FP', idade_fp)
+    )
+  )
+)
+print(res)
+
+cat(sprintf(modelo, res[1], as.numeric(res[2])))
 #resolvendo com um dataframe ordenado
 frame = data.frame(nome=c('FN', 'N', 'P', 'FP'), valor=c(idade_fn, idade_n, idade_p, idade_fp))
+frame
 #ordenamos e pegamos todas as linhas (por isso nada depois da virgula)
 frame <- frame[order(frame$valor),]
 frame
