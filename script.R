@@ -61,7 +61,7 @@ print (idade_p)
 print (idade_fp)
 
 #resolvendo com if/else
-modelo = 'Os mais novos são do grupo %s. Mediana: %d\n'
+modelo = 'Os mais novos são do grupo %s. Mediana: %d.\n'
 if (idade_fn < idade_n && idade_fn < idade_p && idade_fn && idade_fp){
   #repare como o \n faz parte da string quando usamos sprintf (e variações de print)
   sprintf(modelo, 'FN', idade_fn)
@@ -112,6 +112,25 @@ frame
 ?paste
 #exibimos
 print (paste("Os mais novos são do grupo: ", frame[1,1], ". Mediana: ", frame[1,2]))
+#######################################################################################
+# 4. Crie um gráfico de barras comparando a média de glicose de cada grupo diagnóstico. Suponha que você não saiba de antemão os grupos, por isso monte um algoritmo genérico usando um loop for para acumular.
+
+#unique: remoção de elementos duplicados
+?unique
+grupos <- unique(arq$Grupo);grupos
+#vetor de quatro posições, uma para cada grupo, inicialmente valendo zero em cada posição
+glicoses <- vector (mode = 'numeric', length = length(grupos)); glicoses
+#Associando os nomes 1, 2, 3 e 4 a cada posição, nesta ordem. cada número é um grupo
+names(glicoses) <- grupos; glicoses
+#intervalo
+n <- 1:length(grupos)
+for (i in n){
+  #pega somente os valores da coluna GL em que grupo igual ao grupo i
+  glicoses[i] <- mean (arq[arq$Grupo==grupos[i], 'GL'])
+}
+glicoses
+barplot(glicoses, main = "Glicemia dos Grupos", ylab="Média Glicemia", xlab='Grupos', col = 'lightblue')
+######################################################################
 
 
 
@@ -143,23 +162,4 @@ print (paste("Os mais novos são do grupo: ", frame[1,1], ". Mediana: ", frame[1
 
 
 
-
-# x <- 3
-# if (x %% 2 == 1)
-#     print ("É impar")
-# 
-# x <- 2
-# if (x %% 2 == 1)
-#     print ("É par")
-# 
-# 
-# x <- 2
-# if (x %% 2 == 1)
-#   print ("É impar")
-# 
-# x <- 2
-# if (x %% 2 == 1)
-#   print ("É impar") else{
-#   print ("É par")
-# }
 
